@@ -1,0 +1,86 @@
+# Simplified Render.com Blueprint for Atlas AI
+# Alternative configuration using native runtimes instead of Docker
+
+services:
+  # Backend API Service (Python)
+  - type: web
+    name: atlas-ai-backend
+    runtime: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn api:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 300 --graceful-timeout 120 --keep-alive 300 --max-requests 1000 --max-requests-jitter 100 --forwarded-allow-ips '*' --worker-connections 1000 --worker-tmp-dir /tmp --preload --log-level info --access-logfile - --error-logfile - --capture-output --enable-stdio-inheritance --threads 2
+    plan: starter
+    region: oregon
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: ENV_MODE
+        value: production
+      - key: PYTHONPATH
+        value: /opt/render/project/src/backend
+      - key: WORKERS
+        value: 4
+      - key: THREADS
+        value: 2
+      - key: WORKER_CONNECTIONS
+        value: 1000
+      # Database & Storage
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      # LLM APIs
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: MODEL_TO_USE
+        value: anthropic/claude-3-7-sonnet-latest
+      # Atlas AI Assistant APIs
+      - key: OPENWEATHER_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: SERP_API_KEY
+        sync: false
+      # Storage
+      - key: REMINDER_STORAGE_FILE
+        value: /opt/render/project/src/data/reminders.json
+
+  # Frontend Web Service (Node.js)
+  - type: web
+    name: atlas-ai-frontend
+    runtime: node
+    buildCommand: cd frontend && npm ci && npm run build
+    startCommand: cd frontend && npm start
+    plan: starter
+    region: oregon
+    branch: main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_ENV_MODE
+        value: production
+      - key: NEXT_PUBLIC_VERCEL_ENV
+        value: production
+      # Backend URL - update after backend deployment
+      - key: NEXT_PUBLIC_BACKEND_URL
+        value: https://atlas-ai-backend.onrender.com/api
+      - key: NEXT_PUBLIC_API_URL
+        value: https://atlas-ai-backend.onrender.com/api
+      # Frontend URL
+      - key: NEXT_PUBLIC_URL
+        value: https://atlas-ai-frontend.onrender.com
+      # Supabase
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+
+  # Redis Database
+  - type: redis
+    name: atlas-ai-redis
+    plan: starter
+    region: oregon
+    maxmemoryPolicy: allkeys-lru
