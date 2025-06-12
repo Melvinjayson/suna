@@ -32,27 +32,31 @@ COPY --chown=appuser:appuser . .
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Calculate optimal worker count based on 16 vCPUs
-# Using (2*CPU)+1 formula for CPU-bound applications
-ENV WORKERS=33
-ENV THREADS=2
-ENV WORKER_CONNECTIONS=2000
+# Dynamic worker count for Render.com
+# Render Starter: 0.5 CPU, Standard: 1 CPU, Pro: 2 CPU
+ENV WORKERS=${WORKERS:-4}
+ENV THREADS=${THREADS:-2}
+ENV WORKER_CONNECTIONS=${WORKER_CONNECTIONS:-1000}
 
 EXPOSE 8000
 
-# Gunicorn configuration
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Gunicorn configuration optimized for Render.com
 CMD ["sh", "-c", "gunicorn api:app \
      --workers $WORKERS \
      --worker-class uvicorn.workers.UvicornWorker \
-     --bind 0.0.0.0:8000 \
-     --timeout 1800 \
-     --graceful-timeout 600 \
-     --keep-alive 1800 \
-     --max-requests 0 \
-     --max-requests-jitter 0 \
+     --bind 0.0.0.0:${PORT:-8000} \
+     --timeout 300 \
+     --graceful-timeout 120 \
+     --keep-alive 300 \
+     --max-requests 1000 \
+     --max-requests-jitter 100 \
      --forwarded-allow-ips '*' \
      --worker-connections $WORKER_CONNECTIONS \
-     --worker-tmp-dir /dev/shm \
+     --worker-tmp-dir /tmp \
      --preload \
      --log-level info \
      --access-logfile - \

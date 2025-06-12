@@ -1,11 +1,9 @@
 export const siteConfig = {
-  name: 'Kortix Suna',
-  url: 'https://suna.so/',
-  description: 'Kortix AI',
+  name: 'Atlas AI',
+  url: 'https://github.com/Melvinjayson/atlas-ai',
+  description: 'Voice-enabled personal AI assistant with comprehensive speech capabilities',
   links: {
-    twitter: 'https://x.com/kortixai',
-    github: 'https://github.com/kortix-ai/',
-    linkedin: 'https://www.linkedin.com/company/kortix/',
+    github: 'https://github.com/Melvinjayson/atlas-ai',
   },
 };
 

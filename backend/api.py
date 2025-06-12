@@ -110,13 +110,20 @@ async def log_requests_middleware(request: Request, call_next):
         raise
 
 # Define allowed origins based on environment
-allowed_origins = ["https://www.suna.so", "https://suna.so", "http://localhost:3000"]
+allowed_origins = ["http://localhost:3000", "https://localhost:3000"]
 allow_origin_regex = None
 
-# Add staging-specific origins
-if config.ENV_MODE == EnvMode.STAGING:
-    allowed_origins.append("https://staging.suna.so")
-    allow_origin_regex = r"https://suna-.*-prjcts\.vercel\.app"
+# Add production and staging origins for Atlas AI
+if config.ENV_MODE == EnvMode.PRODUCTION:
+    allowed_origins.extend([
+        "https://atlas-ai-frontend.onrender.com",
+        "https://atlas-ai.onrender.com",
+        "https://atlas-ai.dev",
+        "https://www.atlas-ai.dev"
+    ])
+elif config.ENV_MODE == EnvMode.STAGING:
+    allowed_origins.append("https://staging.atlas-ai.dev")
+    allow_origin_regex = r"https://atlas-ai-.*-prjcts\.vercel\.app"
 
 app.add_middleware(
     CORSMiddleware,
@@ -142,6 +149,20 @@ app.include_router(mcp_api.router, prefix="/api")
 app.include_router(transcription_api.router, prefix="/api")
 
 app.include_router(email_api.router, prefix="/api")
+
+from services import assistant_api
+app.include_router(assistant_api.router, prefix="/api")
+
+# Health check endpoint for Render.com
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for load balancer"""
+    return {
+        "status": "healthy",
+        "service": "atlas-ai-backend",
+        "version": "1.0.0",
+        "timestamp": datetime.now().isoformat()
+    }
 
 @app.get("/api/health")
 async def health_check():

@@ -1,30 +1,31 @@
 <div align="center">
 
-# Suna - Open Source Generalist AI Agent
+# Atlas AI - Voice-Enabled Personal Assistant
 
-(that acts on your behalf)
+(Your intelligent voice companion)
 
-![Suna Screenshot](frontend/public/banner.png)
+![Atlas AI Screenshot](frontend/public/banner.png)
 
-Suna is a fully open source AI assistant that helps you accomplish real-world tasks with ease. Through natural conversation, Suna becomes your digital companion for research, data analysis, and everyday challenges—combining powerful capabilities with an intuitive interface that understands what you need and delivers results.
+Atlas AI is a fully open source voice-enabled personal assistant that combines the power of advanced AI with natural speech interaction. Through voice commands and conversations, Atlas AI becomes your intelligent companion for productivity, research, task management, and everyday challenges—featuring comprehensive speech capabilities and modular assistant features.
 
-Suna's powerful toolkit includes seamless browser automation to navigate the web and extract data, file management for document creation and editing, web crawling and extended search capabilities, command-line execution for system tasks, website deployment, and integration with various APIs and services. These capabilities work together harmoniously, allowing Suna to solve your complex problems and automate workflows through simple conversations!
+Atlas AI's powerful toolkit includes voice-to-text and text-to-speech capabilities, intent recognition for personal assistant tasks, calendar and email management, reminder systems, weather and news queries, seamless browser automation, file management, web crawling, command-line execution, and integration with various APIs and services. These capabilities work together harmoniously through natural voice interaction, allowing Atlas AI to understand your spoken requests and respond with both text and speech!
 
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue)](./license)
-[![Discord Follow](https://dcbadge.limes.pink/api/server/Py6pCBUUPw?style=flat)](https://discord.gg/Py6pCBUUPw)
-[![Twitter Follow](https://img.shields.io/twitter/follow/kortixai)](https://x.com/kortixai)
-[![GitHub Repo stars](https://img.shields.io/github/stars/kortix-ai/suna)](https://github.com/kortix-ai/suna)
-[![Issues](https://img.shields.io/github/issues/kortix-ai/suna)](https://github.com/kortix-ai/suna/labels/bug)
+[![GitHub Repo stars](https://img.shields.io/github/stars/Melvinjayson/atlas-ai)](https://github.com/Melvinjayson/atlas-ai)
+[![Issues](https://img.shields.io/github/issues/Melvinjayson/atlas-ai)](https://github.com/Melvinjayson/atlas-ai/labels/bug)
 
 </div>
 
 ## Table of Contents
 
-- [Suna Architecture](#project-architecture)
+- [Atlas AI Architecture](#project-architecture)
   - [Backend API](#backend-api)
   - [Frontend](#frontend)
+  - [Voice Integration](#voice-integration)
   - [Agent Docker](#agent-docker)
   - [Supabase Database](#supabase-database)
+- [Voice Features](#voice-features)
+- [Personal Assistant Capabilities](#personal-assistant-capabilities)
 - [Use Cases](#use-cases)
 - [Self-Hosting](#self-hosting)
 - [Acknowledgements](#acknowledgements)
@@ -34,7 +35,7 @@ Suna's powerful toolkit includes seamless browser automation to navigate the web
 
 ![Architecture Diagram](docs/images/diagram.png)
 
-Suna consists of four main components:
+Atlas AI consists of five main components:
 
 ### Backend API
 
@@ -42,7 +43,11 @@ Python/FastAPI service that handles REST endpoints, thread management, and LLM i
 
 ### Frontend
 
-Next.js/React application providing a responsive UI with chat interface, dashboard, etc.
+Next.js/React application providing a responsive UI with voice-enabled chat interface, dashboard, and personal assistant controls.
+
+### Voice Integration
+
+Comprehensive speech capabilities including Speech-to-Text (STT) for voice input, Text-to-Speech (TTS) for audio responses, voice activity detection, and intent recognition for personal assistant tasks.
 
 ### Agent Docker
 
@@ -51,6 +56,27 @@ Isolated execution environment for every agent - with browser automation, code i
 ### Supabase Database
 
 Handles data persistence with authentication, user management, conversation history, file storage, agent state, analytics, and real-time subscriptions.
+
+## Voice Features
+
+Atlas AI provides comprehensive voice interaction capabilities:
+
+- **Speech-to-Text (STT)**: Real-time voice recognition with continuous listening and voice activity detection
+- **Text-to-Speech (TTS)**: Natural voice responses with configurable voice options, rate, and pitch
+- **Voice Controls**: Hands-free operation with voice commands for all assistant functions
+- **Multi-language Support**: Voice recognition and synthesis in multiple languages
+- **Noise Handling**: Advanced audio processing for clear voice recognition in various environments
+
+## Personal Assistant Capabilities
+
+Atlas AI includes modular assistant features for productivity and daily tasks:
+
+- **Calendar Management**: Create, read, update, and delete calendar events through voice commands
+- **Email Operations**: Compose, read, and send emails with voice dictation
+- **Reminders & Tasks**: Set and manage reminders, to-do lists, and task scheduling
+- **Weather & News**: Get current weather conditions, forecasts, and latest news updates
+- **Web Search**: Intelligent web search with voice queries and spoken results
+- **Smart Integrations**: Connect with popular services like Google Calendar, Gmail, and more
 
 ## Use Cases
 
@@ -80,7 +106,7 @@ Handles data persistence with authentication, user management, conversation hist
 
 ## Self-Hosting
 
-Suna can be self-hosted on your own infrastructure using our setup wizard. For a comprehensive guide to self-hosting Suna, please refer to our [Self-Hosting Guide](./docs/SELF-HOSTING.md).
+Atlas AI can be self-hosted on your own infrastructure using our setup wizard. For a comprehensive guide to self-hosting Atlas AI, please refer to our [Self-Hosting Guide](./docs/SELF-HOSTING.md).
 
 The setup process includes:
 
@@ -89,14 +115,16 @@ The setup process includes:
 - Setting up Daytona for secure agent execution
 - Integrating with LLM providers (Anthropic, OpenAI, Groq, etc.)
 - Configuring web search and scraping capabilities
+- Setting up speech services for voice capabilities
+- Configuring personal assistant integrations (Calendar, Email, etc.)
 
 ### Quick Start
 
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/kortix-ai/suna.git
-cd suna
+git clone https://github.com/Melvinjayson/atlas-ai.git
+cd atlas-ai
 ```
 
 2. **Run the setup wizard**:
@@ -115,7 +143,7 @@ python start.py
 
 See the [Self-Hosting Guide](./docs/SELF-HOSTING.md) for detailed manual setup instructions.
 
-The wizard will guide you through all necessary steps to get your Suna instance up and running. For detailed instructions, troubleshooting tips, and advanced configuration options, see the [Self-Hosting Guide](./SELF-HOSTING.md).
+The wizard will guide you through all necessary steps to get your Atlas AI instance up and running. For detailed instructions, troubleshooting tips, and advanced configuration options, see the [Self-Hosting Guide](./SELF-HOSTING.md).
 
 ## Contributing
 
@@ -142,4 +170,4 @@ We welcome contributions from the community! Please see our [Contributing Guide]
 
 ## License
 
-Kortix Suna is licensed under the Apache License, Version 2.0. See [LICENSE](./LICENSE) for the full license text.
+Atlas AI is licensed under the Apache License, Version 2.0. See [LICENSE](./LICENSE) for the full license text.

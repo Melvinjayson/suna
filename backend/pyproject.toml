@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "suna"
+name = "atlas-ai"
 version = "1.0"
-description = "open source generalist AI Agent"
-authors = ["marko-kraemer <mail@markokraemer.com>"]
+description = "Voice-enabled personal AI assistant with comprehensive speech capabilities"
+authors = ["Melvinjayson <81628176+Melvinjayson@users.noreply.github.com>"]
 readme = "README.md"
 license = "MIT"
-homepage = "https://www.suna.so/"
-repository = "https://github.com/kortix-ai/suna"
+homepage = "https://github.com/Melvinjayson/atlas-ai"
+repository = "https://github.com/Melvinjayson/atlas-ai"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
