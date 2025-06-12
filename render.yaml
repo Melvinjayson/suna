@@ -1,46 +1,35 @@
-# Render.com Blueprint for Atlas AI
-# This file defines the infrastructure for deploying Atlas AI to Render.com
+# Simplified Render.com Blueprint for Atlas AI
+# Alternative configuration using native runtimes instead of Docker
 
 services:
-  # Backend API Service
+  # Backend API Service (Python)
   - type: web
     name: atlas-ai-backend
-    runtime: docker
-    dockerfilePath: Dockerfile.backend
-    dockerContext: .
-    plan: starter  # Change to 'standard' or 'pro' for production
-    region: oregon  # Choose: oregon, frankfurt, singapore
+    runtime: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn api:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 300 --graceful-timeout 120 --keep-alive 300 --max-requests 1000 --max-requests-jitter 100 --forwarded-allow-ips '*' --worker-connections 1000 --worker-tmp-dir /tmp --preload --log-level info --access-logfile - --error-logfile - --capture-output --enable-stdio-inheritance --threads 2
+    plan: starter
+    region: oregon
     branch: main
     healthCheckPath: /health
     envVars:
       - key: ENV_MODE
         value: production
-      - key: PORT
-        value: 8000
       - key: PYTHONPATH
-        value: /app
+        value: /opt/render/project/src/backend
       - key: WORKERS
-        value: 4  # Adjust based on plan
+        value: 4
       - key: THREADS
         value: 2
       - key: WORKER_CONNECTIONS
         value: 1000
       # Database & Storage
       - key: SUPABASE_URL
-        sync: false  # Set in Render dashboard
+        sync: false
       - key: SUPABASE_ANON_KEY
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
-      # Redis (use Render Redis or external)
-      - key: REDIS_HOST
-        sync: false
-      - key: REDIS_PORT
-        value: 6379
-      - key: REDIS_PASSWORD
-        sync: false
-      - key: REDIS_SSL
-        value: true
       # LLM APIs
       - key: ANTHROPIC_API_KEY
         sync: false
@@ -55,51 +44,18 @@ services:
         sync: false
       - key: SERP_API_KEY
         sync: false
-      # Search & Scraping
-      - key: FIRECRAWL_API_KEY
-        sync: false
-      - key: FIRECRAWL_URL
-        value: https://api.firecrawl.dev
-      # Container Provider
-      - key: DAYTONA_API_KEY
-        sync: false
-      - key: DAYTONA_SERVER_URL
-        value: https://app.daytona.io/api
-      - key: DAYTONA_TARGET
-        value: us
-      # Monitoring
-      - key: LANGFUSE_PUBLIC_KEY
-        sync: false
-      - key: LANGFUSE_SECRET_KEY
-        sync: false
-      - key: LANGFUSE_HOST
-        value: https://cloud.langfuse.com
-      # Email Service
-      - key: MAILTRAP_API_TOKEN
-        sync: false
-      - key: MAILTRAP_SENDER_EMAIL
-        value: noreply@atlas-ai.dev
-      - key: MAILTRAP_SENDER_NAME
-        value: Atlas AI Team
       # Storage
       - key: REMINDER_STORAGE_FILE
-        value: /app/data/reminders.json
-      # AWS (if needed)
-      - key: AWS_ACCESS_KEY_ID
-        sync: false
-      - key: AWS_SECRET_ACCESS_KEY
-        sync: false
-      - key: AWS_REGION_NAME
-        value: us-east-1
+        value: /opt/render/project/src/data/reminders.json
 
-  # Frontend Web Service
+  # Frontend Web Service (Node.js)
   - type: web
     name: atlas-ai-frontend
     runtime: node
     buildCommand: cd frontend && npm ci && npm run build
     startCommand: cd frontend && npm start
-    plan: starter  # Change to 'standard' or 'pro' for production
-    region: oregon  # Same region as backend
+    plan: starter
+    region: oregon
     branch: main
     envVars:
       - key: NODE_ENV
@@ -108,7 +64,7 @@ services:
         value: production
       - key: NEXT_PUBLIC_VERCEL_ENV
         value: production
-      # Backend URL - will be set after backend deployment
+      # Backend URL - update after backend deployment
       - key: NEXT_PUBLIC_BACKEND_URL
         value: https://atlas-ai-backend.onrender.com/api
       - key: NEXT_PUBLIC_API_URL
@@ -116,61 +72,15 @@ services:
       # Frontend URL
       - key: NEXT_PUBLIC_URL
         value: https://atlas-ai-frontend.onrender.com
-      # Supabase (same as backend)
+      # Supabase
       - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
         sync: false
-      # Optional: Google OAuth
-      - key: NEXT_PUBLIC_GOOGLE_CLIENT_ID
-        sync: false
-      # OpenAI for frontend features
-      - key: OPENAI_API_KEY
-        sync: false
 
-  # Redis Database (optional - can use external Redis)
+  # Redis Database
   - type: redis
     name: atlas-ai-redis
-    plan: starter  # 25MB free tier
+    plan: starter
     region: oregon
     maxmemoryPolicy: allkeys-lru
-
-# Optional: Background Worker Service
-# Uncomment if you need the dramatiq worker
-# - type: worker
-#   name: atlas-ai-worker
-#   runtime: docker
-#   dockerfilePath: ./backend/Dockerfile
-#   dockerContext: ./backend
-#   plan: starter
-#   region: oregon
-#   branch: main
-#   startCommand: python -m dramatiq run_agent_background
-#   envVars:
-#     # Same environment variables as backend
-#     - key: ENV_MODE
-#       value: production
-#     # ... (copy all backend envVars here)
-
-# Database recommendations:
-# 1. Use Supabase (external) - already configured
-# 2. For file storage, consider:
-#    - Render Persistent Disks
-#    - AWS S3
-#    - Supabase Storage
-
-# Networking:
-# - Backend will be available at: https://atlas-ai-backend.onrender.com
-# - Frontend will be available at: https://atlas-ai-frontend.onrender.com
-# - Redis will be available internally to backend
-
-# Scaling recommendations:
-# - Start with 'starter' plan for testing
-# - Upgrade to 'standard' for production traffic
-# - Use 'pro' plan for high-traffic applications
-
-# Security notes:
-# - All sensitive environment variables should be set in Render dashboard
-# - Use Render's secret management for API keys
-# - Enable HTTPS (automatic with Render)
-# - Configure CORS properly in backend
