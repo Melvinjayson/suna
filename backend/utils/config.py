@@ -28,6 +28,7 @@ class EnvMode(Enum):
     PRODUCTION = "production"
 
 class Configuration:
+    STRIPE_SECRET_KEY: Optional[str] = None
     ENV_MODE: EnvMode = EnvMode.LOCAL
 
     # Redis
@@ -117,3 +118,4 @@ class Configuration:
         }
 
 config = Configuration()
+
