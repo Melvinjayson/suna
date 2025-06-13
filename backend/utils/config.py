@@ -126,26 +126,29 @@ class Configuration:
     MODEL_TO_USE: Optional[str] = "anthropic/claude-3-7-sonnet-latest"
     
     # Supabase configuration
-    SUPABASE_URL: str
-    SUPABASE_ANON_KEY: str
-    SUPABASE_SERVICE_ROLE_KEY: str
+    SUPABASE_URL: str = None
+    SUPABASE_ANON_KEY: str = None
+    SUPABASE_SERVICE_ROLE_KEY: str = None # Or Optional[str] = None if truly optional
+  
     
     # Redis configuration
-    REDIS_HOST: str
+    REDIS_HOST: str = None
     REDIS_PORT: int = 6379
-    REDIS_PASSWORD: str
+    REDIS_PASSWORD: str = None
     REDIS_SSL: bool = True
     
     # Daytona sandbox configuration
-    DAYTONA_API_KEY: str
-    DAYTONA_SERVER_URL: str
-    DAYTONA_TARGET: str
+    DAYTONA_API_KEY: str = None
+    DAYTONA_SERVER_URL: str = None
+    DAYTONA_TARGET: str = None
+    
     
     # Search and other API keys
-    TAVILY_API_KEY: str
-    RAPID_API_KEY: str
+    TAVILY_API_KEY: str = None
+    RAPID_API_KEY: str = None
+    
     CLOUDFLARE_API_TOKEN: Optional[str] = None
-    FIRECRAWL_API_KEY: str
+    FIRECRAWL_API_KEY: str = None
     FIRECRAWL_URL: Optional[str] = "https://api.firecrawl.dev"
     
     # Stripe configuration
