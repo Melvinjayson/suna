@@ -28,6 +28,7 @@ class EnvMode(Enum):
     PRODUCTION = "production"
 
 class Configuration:
+    STRIPE_FREE_TIER_ID: Optional[str] = "si_STnYklLnj4dbjn"
     STRIPE_SECRET_KEY: Optional[str] = None
     ENV_MODE: EnvMode = EnvMode.LOCAL
 
@@ -118,4 +119,3 @@ class Configuration:
         }
 
 config = Configuration()
-
