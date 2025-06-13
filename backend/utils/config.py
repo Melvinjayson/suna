@@ -1,7 +1,7 @@
 """
 Configuration management.
 
-This module provides a centralized way to access configuration settings and
+This module provides a centralized way to access configuration settings and        
 environment variables across the application. It supports different environment
 modes (development, staging, production) and provides validation for required
 values.
