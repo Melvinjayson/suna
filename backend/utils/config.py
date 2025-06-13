@@ -50,11 +50,16 @@ class Configuration:
 
     # Supabase
     SUPABASE_URL: str = "https://oertwiwczbaxsiaqldjl.supabase.co"
-    SUPABASE_ANON_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-    SUPABASE_SERVICE_ROLE_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    SUPABASE_ANON_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lcnR3aXdjemJheHNpYXFsZGpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzMzY3MTMsImV4cCI6MjA2NDkxMjcxM30.-dSKLVZRKewQUx1Zu-VUuYjnMKyEBPQS43aDevqQmAU"
+    SUPABASE_SERVICE_ROLE_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lcnR3aXdjemJheHNpYXFsZGpsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTMzNjcxMywiZXhwIjoyMDY0OTEyNzEzfQ.DUHti7Lg5HoMrbJFpNScrH4I8vY2mSubTwPZTHEmj8I"
 
-    # OpenAI and others (if applicable)
-    OPENAI_API_KEY: Optional[str] = None
+    # AWS (added missing attributes)
+    AWS_ACCESS_KEY_ID: Optional[str] = "AKIAQMF7TPJ67UAXUVVL"
+    AWS_SECRET_ACCESS_KEY: Optional[str] = "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"
+    AWS_REGION_NAME: Optional[str] = "us-east-1"
+
+    # OpenAI and others
+    OPENAI_API_KEY: Optional[str] = "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"
     GROQ_API_KEY: Optional[str] = None
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_API_BASE: Optional[str] = "https://openrouter.ai/api/v1"
